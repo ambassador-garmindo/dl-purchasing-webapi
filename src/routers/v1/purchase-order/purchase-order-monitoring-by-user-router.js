@@ -22,8 +22,9 @@ function getRouter() {
             var dateTo = request.params.dateTo;
             var state = parseInt(request.params.state);
             var createdBy = request.user.username;
+            var budgetId = request.params.budgetId;
 
-            manager.getDataPOMonitoringPembelian(unitId, categoryId, PODLNo, PRNo, supplierId, dateFrom, dateTo, state, createdBy)
+            manager.getDataPOMonitoringPembelian(unitId, categoryId, PODLNo, PRNo, supplierId, dateFrom, dateTo, state, budgetId, "", createdBy)
                 .then(docs => {
 
                     var dateFormat = "DD/MM/YYYY";
@@ -64,6 +65,8 @@ function getRouter() {
                                         "No": index,
                                         "Tanggal Purchase Request": moment(new Date(PO.purchaseRequest.date)).format(dateFormat),
                                         "No Purchase Request": PO.purchaseRequest.no,
+                                        "Kategori": PO.category.name,
+                                        "Budget": PO.purchaseRequest.budget.name,
                                         "Nama Barang": item.product.name,
                                         "Kode Barang": item.product.code,
                                         "Jumlah Barang": item.dealQuantity ? item.dealQuantity : 0,
@@ -72,7 +75,7 @@ function getRouter() {
                                         "Harga Total": PO.purchaseOrderExternal ? (item.pricePerDealUnit * item.dealQuantity * PO.purchaseOrderExternal.currencyRate) : 0,
                                         "Kode Supplier": PO.supplier.code ? PO.supplier.code : "-",
                                         "Nama Supplier": PO.supplier.name ? PO.supplier.name : "-",
-                                        "Tanggal Terima PO Internal": moment(new Date(PO.purchaseRequest.date)).format(dateFormat),
+                                        "Tanggal Terima PO Internal": moment(new Date(PO._createdDate)).format(dateFormat),
                                         "Tanggal Terima PO Eksternal": PO.purchaseOrderExternal.date ? moment(new Date(PO.purchaseOrderExternal.date)).format(dateFormat) : "-",
                                         "Tanggal Target Datang": PO.purchaseOrderExternal.expectedDeliveryDate ? moment(new Date(PO.purchaseOrderExternal.expectedDeliveryDate)).format(dateFormat) : "-",
                                         "No PO Eksternal": PO.purchaseOrderExternal.no ? PO.purchaseOrderExternal.no : "-",
@@ -112,6 +115,8 @@ function getRouter() {
                                     "No": index,
                                     "Tanggal Purchase Request": moment(new Date(PO.purchaseRequest.date)).format(dateFormat),
                                     "No Purchase Request": PO.purchaseRequest.no,
+                                    "Kategori": PO.category.name,
+                                    "Budget": PO.purchaseRequest.budget.name,
                                     "Nama Barang": item.product.name,
                                     "Kode Barang": item.product.code,
                                     "Jumlah Barang": item.dealQuantity ? item.dealQuantity : 0,
@@ -164,6 +169,8 @@ function getRouter() {
                             "No": "number",
                             "Tanggal Purchase Request": "string",
                             "No Purchase Request": "string",
+                            "Kategori": "string",
+                            "Budget": "string",
                             "Nama Barang": "string",
                             "Kode Barang": "string",
                             "Jumlah Barang": "number",
