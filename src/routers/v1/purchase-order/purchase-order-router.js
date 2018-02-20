@@ -5,8 +5,7 @@ var JwtRouterFactory = require("../../jwt-router-factory");
 function getRouter() {
     var router = JwtRouterFactory(Manager, {
         version: apiVersion,
-        defaultOrder: {
-            "_updatedDate": -1
+        defaultOrder:{
         },
         defaultSelect:["unit.division.name","unit.name", "category.name", "purchaseRequest.date", "purchaseRequest.no", "purchaseRequest.expectedDeliveryDate", "_createdBy","purchaseOrderExternal.isPosted", "isPosted"]
     });
